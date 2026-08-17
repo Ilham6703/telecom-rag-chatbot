@@ -14,16 +14,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+DEFAULT_API_BASE_URL = "https://telecom-rag-chatbot.onrender.com"
+
 
 def get_api_base_url() -> str:
-    """Return the backend URL for local development or a Render deployment."""
+    """Return the configured backend URL for local or Render deployments."""
 
     # API_BASE_URL supports an externally hosted API. API_HOSTPORT is supplied
     # by render.yaml and points to the API over Render's private network.
     api_url = os.getenv("API_BASE_URL") or os.getenv("API_HOSTPORT")
 
     if not api_url:
-        return "http://127.0.0.1:8000"
+        return DEFAULT_API_BASE_URL
 
     if "://" not in api_url:
         api_url = f"http://{api_url}"
