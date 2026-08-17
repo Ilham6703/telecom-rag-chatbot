@@ -1,11 +1,56 @@
+# Virtual Environment
 venv/
+.venv/
+
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Environment Variables
 .env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Pytest
+.pytest_cache/
+
+# Mypy
+.mypy_cache/
+
+# Ruff
+.ruff_cache/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Build / Distribution
+build/
+dist/
+*.egg-info/
+
+# Data
 data/raw/*.docx
 data/processed/*
 !data/processed/.gitkeep
 data/indexes/*
 !data/indexes/.gitkeep
-.DS_Store
-*.log
+
+# Local databases (if ever added)
+*.db
+*.sqlite
+*.sqlite3
+# Evaluation outputs
+evaluation/ragas_results.json
+evaluation/retrieval_debug.json
+evaluation/run_log.txt
+evaluation/per_question_results.csv
