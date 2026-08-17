@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: telecom-rag-api
+    runtime: python
+    plan: free
+    buildCommand: pip install --no-cache-dir -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: COHERE_API_KEY
+        sync: false
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false
+      - key: QDRANT_COLLECTION
+        value: telecom_knowledge_base
+
+  - type: web
+    name: telecom-rag-frontend
+    runtime: python
+    plan: free
+    buildCommand: pip install --no-cache-dir -r requirements.txt
+    startCommand: streamlit run frontend/streamlit_app.py --server.address 0.0.0.0 --server.port $PORT
+    envVars:
+      - key: API_HOSTPORT
+        fromService:
+          type: web
+          name: telecom-rag-api
+          property: hostport

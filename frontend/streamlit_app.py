@@ -4,14 +4,35 @@ Streamlit Frontend
 Simple UI for interacting with the Telecom RAG Chatbot.
 """
 
+import os
 import uuid
 
 import requests
 import streamlit as st
+from dotenv import load_dotenv
 
 
-API_URL = "http://127.0.0.1:8000/chat"
-STREAM_API_URL = "http://127.0.0.1:8000/chat/stream"
+load_dotenv()
+
+
+def get_api_base_url() -> str:
+    """Return the backend URL for local development or a Render deployment."""
+
+    # API_BASE_URL supports an externally hosted API. API_HOSTPORT is supplied
+    # by render.yaml and points to the API over Render's private network.
+    api_url = os.getenv("API_BASE_URL") or os.getenv("API_HOSTPORT")
+
+    if not api_url:
+        return "http://127.0.0.1:8000"
+
+    if "://" not in api_url:
+        api_url = f"http://{api_url}"
+
+    return api_url.rstrip("/")
+
+
+API_BASE_URL = get_api_base_url()
+STREAM_API_URL = f"{API_BASE_URL}/chat/stream"
 
 
 st.set_page_config(
