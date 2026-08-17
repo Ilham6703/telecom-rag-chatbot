@@ -1,0 +1,14 @@
+{
+  "dataset_size": 13,
+  "answered_questions": 10,
+  "abstentions": 3,
+  "status": "skipped",
+  "reason": "RAGAS is unavailable in the current environment.",
+  "metrics": {
+    "faithfulness": null,
+    "answer_relevancy": null,
+    "context_precision": null,
+    "context_recall": null
+  },
+  "overall_score": null
+}
