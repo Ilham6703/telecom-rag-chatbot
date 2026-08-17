@@ -5,6 +5,7 @@ Simple UI for interacting with the Telecom RAG Chatbot.
 """
 
 import os
+import time
 import uuid
 
 import requests
@@ -35,6 +36,39 @@ def get_api_base_url() -> str:
 
 API_BASE_URL = get_api_base_url()
 STREAM_API_URL = f"{API_BASE_URL}/chat/stream"
+RETRYABLE_STATUS_CODES = {502, 503, 504}
+
+
+def post_stream_with_retry(payload: dict) -> requests.Response:
+    """Allow a sleeping Render API time to start before surfacing an error."""
+
+    last_error: requests.RequestException | None = None
+
+    for attempt in range(6):
+        try:
+            response = requests.post(
+                STREAM_API_URL,
+                json=payload,
+                stream=True,
+                timeout=180,
+            )
+
+            if response.status_code not in RETRYABLE_STATUS_CODES:
+                response.raise_for_status()
+                return response
+
+            response.close()
+            last_error = requests.HTTPError(
+                f"Backend is starting (HTTP {response.status_code})."
+            )
+        except requests.RequestException as error:
+            last_error = error
+
+        if attempt < 5:
+            # Render Free instances can take about a minute to resume.
+            time.sleep(5 * (attempt + 1))
+
+    raise last_error or RuntimeError("Unable to reach the backend API.")
 
 
 st.set_page_config(
@@ -265,17 +299,12 @@ if user_input:
 
             try:
 
-                response = requests.post(
-                    STREAM_API_URL,
-                    json={
+                response = post_stream_with_retry(
+                    {
                         "message": user_input,
                         "session_id": st.session_state.session_id,
-                    },
-                    stream=True,
-                    timeout=180,
+                    }
                 )
-
-                response.raise_for_status()
 
                 answer_parts = []
                 placeholder = st.empty()
