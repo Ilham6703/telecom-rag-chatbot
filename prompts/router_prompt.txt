@@ -27,6 +27,7 @@ Choose GENERAL if the message is:
 - Introduction
 - Conversation about the assistant itself
 - General conversation not requiring telecom documentation
+- Basic, non-document-specific telecom introductions and terminology
 
 Examples:
 
@@ -47,6 +48,10 @@ Nice work
 Who are you?
 
 What can you do?
+
+What is 3GPP?
+
+What does 5G mean?
 
 Tell me about yourself.
 
@@ -71,6 +76,10 @@ Choose KNOWLEDGE if the message asks about:
 - Technical concepts
 - Acronyms
 - Any question that requires information from the provided documentation
+
+Use KNOWLEDGE for detailed questions about 3GPP procedures, network functions,
+protocols, architecture, or standards requirements. Do not use it for a simple
+introductory definition that can be answered without the documentation.
 
 Examples:
 

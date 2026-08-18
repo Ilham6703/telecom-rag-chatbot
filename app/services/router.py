@@ -49,10 +49,13 @@ GENERAL:
 - Capability questions
 - Thank you
 - Goodbye
+- Basic, non-document-specific telecom introductions and terminology, such as
+  "What is 3GPP?" or "What does 5G mean?"
 
 KNOWLEDGE:
 - Any question requiring information from the provided 3GPP telecom documentation.
-- Technical telecom questions.
+- Detailed technical telecom questions about procedures, network functions,
+  standards requirements, architecture, or protocols.
 - Follow-up questions about previous telecom answers.
 
 Never explain.
